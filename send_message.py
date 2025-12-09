@@ -12,7 +12,8 @@ def main():
     env_vars = get_environment_variables()
     webhook_url = env_vars["MIA_WEBHOOK"]
     image_url = env_vars["IMAGE_URL"]
-    mia = Mia(webhook=webhook_url, image_url_root=image_url)
+    dry_run = "DRY_RUN" in env_vars
+    mia = Mia(webhook=webhook_url, image_url_root=image_url, dry_run=dry_run)
     mode = sys.argv[1]
 
     match mode:
@@ -31,12 +32,16 @@ def main():
 class Mia:
     webhook: str
     image_url_root: str
+    dry_run: bool
 
     def send_message(self, content: str):
         avatar = None
         if random.random() < 0.001:
             avatar = urljoin(self.image_url_root+"/", "mia_buttocks.png")
-        send_webhook(self.webhook, content, avatar_url=avatar)
+        
+        print(f"Sending '{content}'")
+        if not self.dry_run:
+            send_webhook(self.webhook, content, avatar_url=avatar)
 
 def send_webhook(webhook_url: str, content: str, username: str | None = None, avatar_url: str | None = None):
     json_post_data = {
