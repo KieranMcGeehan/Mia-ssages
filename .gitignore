@@ -1,1 +1,4 @@
 .env
+systemd_out
+
+__pycache__
