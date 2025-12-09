@@ -13,10 +13,10 @@ def main():
         sys.exit(1)
     
     exec_path = sys.argv[1]
-    list = TimerList()
-    define_timers(list)
+    tlist = TimerList()
+    define_timers(tlist)
 
-    used_modes = set([mode for (_,mode) in list.timers])
+    used_modes = set([mode for (_,mode) in tlist.timers])
 
     output_dir = Path("./systemd_out")
     output_dir.mkdir(exist_ok=True)
@@ -28,18 +28,38 @@ def main():
             output_dir / f"{filename_prefix}-{mode}.service",
             gen_service(exec_path, mode)
         )
+    timer_files: list[str] = []
     i = 0
-    for (calender, mode) in list.timers:
+    for (calender, mode) in tlist.timers:
+        n = f"{filename_prefix}-{i}.timer"
+        timer_files.append(n)
         write(
-            output_dir / f"{filename_prefix}-{i}.timer",
-            gen_timer(calender, f"{filename_prefix}-{mode}.service")
+            output_dir / n,
+            gen_timer(calender, f"{filename_prefix}-{mode}.service", filename_prefix)
         )
         i += 1
+    write(
+        output_dir / f"{filename_prefix}.service",
+        gen_main(timer_files)
+    )
 
 
 def write(p: Path, content: str):
     with open(p, "w") as f:
         _ = f.write(content)
+
+def gen_main(timers: list[str]) -> str:
+    f = f"""
+[Unit]
+Description=App Service
+""".strip()
+    for t in timers:
+        f += f"\nWants={t}"
+    f += """
+[Install]
+WantedBy=default.target
+    """
+    return f
 
 def gen_service(exec: str, arg: MiassageModes) -> str:
     return f"""
@@ -52,10 +72,11 @@ ExecStart={exec} {arg.value}
 PrivateTmp=true
     """.strip()
 
-def gen_timer(timer: str, unit: str) -> str:
+def gen_timer(timer: str, unit: str, prefix: str) -> str:
     return f"""
 [Unit]
 Description=Timer for Mia-ssages
+PartOf={prefix}
 
 [Timer]
 Unit={unit}
