@@ -1,12 +1,12 @@
+#!/bin/env python3
+
 from dataclasses import dataclass
 import os
 from pathlib import Path
-import json
 import random
 import sys
 from urllib.parse import urljoin
 import requests
-from urllib3.util import Url
 
 def main():
     env_vars = get_environment_variables()
