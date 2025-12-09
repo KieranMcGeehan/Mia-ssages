@@ -8,25 +8,38 @@ import sys
 from urllib.parse import urljoin
 import requests
 
+from modes import MiassageModes
+
 def main():
     env_vars = get_environment_variables()
     webhook_url = env_vars["MIA_WEBHOOK"]
     image_url = env_vars["IMAGE_URL"]
     dry_run = "DRY_RUN" in env_vars
     mia = Mia(webhook=webhook_url, image_url_root=image_url, dry_run=dry_run)
-    mode = sys.argv[1]
+
+
+    if len(sys.argv) < 2:
+        print(f"Usage: {sys.argv[0]} [exec]")
+        sys.exit(1)
+    
+    mode: None | MiassageModes = None
+    for m in MiassageModes:
+        if sys.argv[1] == m.value:
+            mode = m
+    if not mode:
+        print(f"Unknown mode '{sys.argv[1]}'")
+        print(f"Supported modes are: {[x.value for x in MiassageModes]}")
+        sys.exit(1)
 
     match mode:
-        case "eyes-tablet-antibiotics":
+        case MiassageModes.EYES_TABLET_SUPPLIMENT:
             mia.send_message("Nyaaa~ eyes pwease. I awso need some antibiwotics n supplimewnts")
-        case "eyes-tablet":
+        case MiassageModes.EYES_TABLET:
             mia.send_message("Nyaaa~ eyes pwease. I awso need some antibiwotics 🥺")
-        case "eyes":
+        case MiassageModes.EYES:
             mia.send_message("Nyaaa~ eyes pwease!")
-        case "food":
+        case MiassageModes.FOOD:
             mia.send_message("Parents. Please feed me")
-        case _:
-            raise Exception(f"Invalid mode '{mode}'")
     print("Done, exiting")
 
 @dataclass

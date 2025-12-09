@@ -3,6 +3,7 @@
 from pathlib import Path
 import sys
 
+from modes import MiassageModes
 from timer_list import TimerList
 from timers import define_timers
 
@@ -40,14 +41,14 @@ def write(p: Path, content: str):
     with open(p, "w") as f:
         _ = f.write(content)
 
-def gen_service(exec: str, arg: str) -> str:
+def gen_service(exec: str, arg: MiassageModes) -> str:
     return f"""
 [Unit]
 Description=Send Mia-ssage ({arg})
 
 [Service]
 Type=oneshot
-ExecStart={exec} {arg}
+ExecStart={exec} {arg.value}
 PrivateTmp=true
     """.strip()
 
