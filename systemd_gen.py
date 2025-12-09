@@ -58,6 +58,11 @@ Description=App Service
     f += """
 [Install]
 WantedBy=default.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/true
+RemainAfterExit=yes
     """
     return f
 
@@ -80,7 +85,7 @@ PartOf={prefix}
 
 [Timer]
 Unit={unit}
-OnCalender={timer}
+OnCalendar={timer}
 AccuracySec=30s
 Persistent=true
 

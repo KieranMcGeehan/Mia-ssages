@@ -77,7 +77,7 @@ def send_webhook(webhook_url: str, content: str, username: str | None = None, av
 def get_environment_variables() -> dict[str, str]:
     environ: dict[str, str] = {}
     # Load environment variables from file
-    environ_file = Path("./.env")
+    environ_file = Path(__file__).parent /  ".env"
     if environ_file.exists():
         with open(environ_file, "r") as f:
             line_number = 1
