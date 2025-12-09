@@ -1,4 +1,5 @@
 .env
 systemd_out
+deploy.sh
 
 __pycache__
