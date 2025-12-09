@@ -27,6 +27,7 @@ def main():
             mia.send_message("Parents. Please feed me")
         case _:
             raise Exception(f"Invalid mode '{mode}'")
+    print("Done, exiting")
 
 @dataclass
 class Mia:
@@ -58,6 +59,7 @@ def send_webhook(webhook_url: str, content: str, username: str | None = None, av
     )
     # Raise an exception if discord returned an error
     result.raise_for_status()
+    print("Sent http request successfully")
 
 def get_environment_variables() -> dict[str, str]:
     environ: dict[str, str] = {}
