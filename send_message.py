@@ -74,7 +74,7 @@ def get_environment_variables() -> dict[str, str]:
                 if not "=" in line:
                     raise Exception(f"Error on line {line_number} of {environ_file}. Lines should be formatted as key=val")
                 [key,val] = line.split("=", 1)
-                environ[key] = val
+                environ[key] = val.strip()
     # Load actual environment variables, overriding any in the file
     for key,val in os.environ.items():
         environ[key] = val
