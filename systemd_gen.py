@@ -81,7 +81,7 @@ def gen_timer(timer: str, unit: str, prefix: str) -> str:
     return f"""
 [Unit]
 Description=Timer for Mia-ssages
-PartOf={prefix}
+PartOf={prefix}.service
 
 [Timer]
 Unit={unit}
