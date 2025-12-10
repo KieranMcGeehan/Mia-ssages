@@ -87,6 +87,7 @@ PartOf={prefix}
 Unit={unit}
 OnCalendar={timer}
 AccuracySec=30s
+RandomizedDelaySec=0
 Persistent=true
 
 [Install]
