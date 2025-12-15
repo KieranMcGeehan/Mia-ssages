@@ -32,12 +32,10 @@ def main():
         sys.exit(1)
 
     match mode:
-        case MiassageModes.EYES_TABLET_SUPPLIMENT:
-            mia.send_message("Nyaaa~ eyes pwease. I awso need some antibiwotics n supplimewnts")
-        case MiassageModes.EYES_TABLET:
-            mia.send_message("Nyaaa~ eyes pwease. I awso need some antibiwotics 🥺")
-        case MiassageModes.EYES:
-            mia.send_message("Nyaaa~ eyes pwease!")
+        case MiassageModes.TABLET_SUPPLIMENT:
+            mia.send_message("I need some antibiwotics n supplimewnts pwease")
+        case MiassageModes.TABLET:
+            mia.send_message("I need some antibiwotics 🥺")
         case MiassageModes.FOOD:
             mia.send_message("Parents. Please feed me")
     print("Done, exiting")
@@ -50,8 +48,8 @@ class Mia:
 
     def send_message(self, content: str):
         avatar = None
-        if random.random() < 0.001:
-            avatar = urljoin(self.image_url_root+"/", "mia_buttocks.png")
+        # if random.random() < 0.001:
+            # avatar = urljoin(self.image_url_root+"/", "mia_buttocks.png")
         
         print(f"Sending '{content}'")
         if not self.dry_run:

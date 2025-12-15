@@ -3,7 +3,6 @@ import enum
 
 @enum.unique
 class MiassageModes(StrEnum):
-    EYES = "eyes"
-    EYES_TABLET = "eyes-tablet"
-    EYES_TABLET_SUPPLIMENT = "eyes-tablet-suppliments"
+    TABLET = "tablet"
+    TABLET_SUPPLIMENT = "tablet-suppliments"
     FOOD = "food"
